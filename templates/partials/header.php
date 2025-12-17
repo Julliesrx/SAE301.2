@@ -2,12 +2,14 @@
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"> <title>Free Message - Transport Social</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Message - Transport Social</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
-<body class="bg-light">
+
+<body class="bg-light d-flex flex-column min-vh-100">
 
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top mb-4">
   <div class="container">
@@ -20,6 +22,7 @@
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav ms-auto">
         <?php if (isset($_SESSION['user_id'])): ?>
+            
             <li class="nav-item">
                 <a class="nav-link active" href="index.php?page=post_create"><i class="fas fa-camera"></i> Poster</a>
             </li>
@@ -31,8 +34,9 @@
             <?php endif; ?>
 
             <li class="nav-item">
-                <a class="nav-link text-white" href="#">@<?= htmlspecialchars($_SESSION['username']) ?></a>
+                <a class="nav-link text-white" href="index.php?page=profile">@<?= htmlspecialchars($_SESSION['username']) ?></a>
             </li>
+            
             <li class="nav-item">
                 <a class="nav-link text-danger" href="index.php?page=logout"><i class="fas fa-sign-out-alt"></i></a>
             </li>
@@ -46,4 +50,4 @@
   </div>
 </nav>
 
-<div class="container main-content">
+<div class="container main-content flex-grow-1">

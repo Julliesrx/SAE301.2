@@ -1,0 +1,20 @@
+/* Animation Élastique du Cœur */
+.heart-bounce {
+    /* Durée 0.4s avec une courbe élastique "cubic-bezier" */
+    animation: bounce 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes bounce {
+    0% {
+        transform: scale(1); /* Taille normale */
+    }
+    30% {
+        transform: scale(0.6); /* Il rétrécit fort (pression) */
+    }
+    60% {
+        transform: scale(1.3); /* Il explose un peu trop gros (rebond) */
+    }
+    100% {
+        transform: scale(1); /* Il revient à la normale */
+    }
+}

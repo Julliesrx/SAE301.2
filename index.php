@@ -38,7 +38,7 @@ switch ($page) {
         require_once 'controllers/PostController.php';
         create(); // Formulaire d'upload
         break;
-    
+
     // --- ADMIN ---
     case 'admin':
         require_once 'controllers/PostController.php';
@@ -54,5 +54,15 @@ switch ($page) {
     default:
         require_once 'controllers/PostController.php';
         index(); // Par défaut, on va sur le feed
+        break;
+
+    case 'profile':
+        require_once 'controllers/UserController.php';
+        profile();
+        break;
+
+    case 'profile_edit':
+        require_once 'controllers/UserController.php';
+        editProfile();
         break;
 }

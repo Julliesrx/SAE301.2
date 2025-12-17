@@ -65,3 +65,76 @@ function updatePostStatus($postId, $status) {
     $stmt = $pdo->prepare($sql);
     return $stmt->execute([$status, $postId]);
 }
+
+// --- GESTION LIKES & DISLIKES ---
+
+// Vérifications
+function hasLiked($userId, $postId) {
+    global $pdo;
+    $stmt = $pdo->prepare("SELECT COUNT(*) FROM likes WHERE id_user = ? AND id_post = ?");
+    $stmt->execute([$userId, $postId]);
+    return $stmt->fetchColumn() > 0;
+}
+
+function hasDisliked($userId, $postId) {
+    global $pdo;
+    $stmt = $pdo->prepare("SELECT COUNT(*) FROM dislikes WHERE id_user = ? AND id_post = ?");
+    $stmt->execute([$userId, $postId]);
+    return $stmt->fetchColumn() > 0;
+}
+
+// Actions LIKE
+function addLike($userId, $postId) {
+    global $pdo;
+    $stmt = $pdo->prepare("INSERT INTO likes (id_user, id_post) VALUES (?, ?)");
+    return $stmt->execute([$userId, $postId]);
+}
+
+function removeLike($userId, $postId) {
+    global $pdo;
+    $stmt = $pdo->prepare("DELETE FROM likes WHERE id_user = ? AND id_post = ?");
+    return $stmt->execute([$userId, $postId]);
+}
+
+// Actions DISLIKE
+function addDislike($userId, $postId) {
+    global $pdo;
+    $stmt = $pdo->prepare("INSERT INTO dislikes (id_user, id_post) VALUES (?, ?)");
+    return $stmt->execute([$userId, $postId]);
+}
+
+function removeDislike($userId, $postId) {
+    global $pdo;
+    $stmt = $pdo->prepare("DELETE FROM dislikes WHERE id_user = ? AND id_post = ?");
+    return $stmt->execute([$userId, $postId]);
+}
+
+// Récupérer les posts d'un utilisateur spécifique (Pour l'onglet "Mes Posts")
+function getPostsByUser($userId) {
+    global $pdo;
+    $sql = "SELECT p.*, c.name as cat_name 
+            FROM posts p
+            JOIN categories c ON p.id_category = c.id_category
+            WHERE p.id_user = ? AND p.statut = 'PUBLISHED'
+            ORDER BY p.creation DESC";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$userId]);
+    return $stmt->fetchAll();
+}
+
+// Récupérer les posts LIKÉS par un utilisateur (Pour l'onglet "J'aime")
+function getLikedPostsByUser($userId) {
+    global $pdo;
+    // Double jointure : on part des likes -> on va chercher les posts -> on va chercher les auteurs et catégories
+    $sql = "SELECT p.*, u.username, c.name as cat_name 
+            FROM likes l
+            JOIN posts p ON l.id_post = p.id_post
+            JOIN users u ON p.id_user = u.id_user
+            JOIN categories c ON p.id_category = c.id_category
+            WHERE l.id_user = ? AND p.statut = 'PUBLISHED'
+            ORDER BY l.created_at DESC";
+            
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$userId]);
+    return $stmt->fetchAll();
+}
