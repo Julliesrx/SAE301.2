@@ -25,9 +25,12 @@
             <?php foreach($posts as $p): ?>
             
             <?php 
-                require_once 'models/PostModel.php'; 
+                // Vérification Like/Dislike
                 $isLiked = isset($_SESSION['user_id']) ? hasLiked($_SESSION['user_id'], $p['id_post']) : false;
                 $isDisliked = isset($_SESSION['user_id']) ? hasDisliked($_SESSION['user_id'], $p['id_post']) : false;
+                
+                // Récupération des commentaires pour ce post
+                $comments = getCommentsByPost($p['id_post']);
             ?>
 
             <div class="col-12 col-md-4 mb-4">
@@ -35,7 +38,6 @@
                     
                     <div class="card-header bg-white border-0 pb-0">
                         <a href="index.php?page=profile&id=<?= $p['id_user'] ?>" class="d-flex align-items-center text-decoration-none text-dark">
-                            
                             <?php if (isset($p['pp']) && $p['pp'] !== 'default.jpg' && !empty($p['pp'])): ?>
                                 <img src="assets/uploads/<?= htmlspecialchars($p['pp']) ?>" 
                                      class="rounded-circle me-2" 
@@ -43,7 +45,6 @@
                             <?php else: ?>
                                 <i class="fas fa-user-circle fa-2x text-secondary me-2"></i>
                             <?php endif; ?>
-
                             <strong><?= htmlspecialchars($p['username']) ?></strong>
                         </a>
                     </div>
@@ -89,6 +90,33 @@
                         <i class="fas fa-eye-slash fa-3x text-muted mb-3"></i>
                         <p class="text-muted fw-bold">Vous avez masqué ce contenu.</p>
                         <button class="btn btn-sm btn-outline-dark undo-btn" data-id="<?= $p['id_post'] ?>">Réafficher</button>
+                    </div>
+
+                    <div class="card-footer bg-white border-0 pt-0">
+                        <div class="comments-list mb-2" style="max-height: 100px; overflow-y: auto;">
+                            <?php if(empty($comments)): ?>
+                                <small class="text-muted fst-italic">Soyez le premier à commenter...</small>
+                            <?php else: ?>
+                                <?php foreach($comments as $c): ?>
+                                    <div class="d-flex mb-1">
+                                        <small>
+                                            <strong><?= htmlspecialchars($c['username']) ?></strong> : 
+                                            <?= htmlspecialchars($c['content']) ?>
+                                        </small>
+                                    </div>
+                                <?php endforeach; ?>
+                            <?php endif; ?>
+                        </div>
+
+                        <?php if(isset($_SESSION['user_id'])): ?>
+                            <form action="index.php?page=comment" method="POST" class="d-flex gap-1">
+                                <input type="hidden" name="post_id" value="<?= $p['id_post'] ?>">
+                                <input type="text" name="content" class="form-control form-control-sm rounded-pill" placeholder="Votre commentaire..." required>
+                                <button type="submit" class="btn btn-sm btn-outline-primary rounded-circle">
+                                    <i class="fas fa-paper-plane"></i>
+                                </button>
+                            </form>
+                        <?php endif; ?>
                     </div>
 
                 </div>

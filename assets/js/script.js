@@ -1,6 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // --- GESTION DES LIKES (Cœur avec effet élastique) ---
+    // ============================================================
+    // 1. GESTION DES LIKES (Cœur élastique + AJAX)
+    // ============================================================
     const likeButtons = document.querySelectorAll('.like-btn');
 
     likeButtons.forEach(button => {
@@ -10,78 +12,110 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Logique visuelle
             if (icon.classList.contains('far')) {
-                // DEVIENT LIKÉ (Plein)
+                // LIKE
                 icon.classList.remove('far');
                 icon.classList.add('fas');
 
-                // --- DÉBUT DE L'ANIMATION ---
-                // 1. On ajoute la classe CSS qu'on vient de créer
+                // Animation "Boing"
                 icon.classList.add('heart-bounce');
-
-                // 2. On l'enlève après 400ms (durée de l'anim) pour pouvoir la refaire
                 setTimeout(() => {
                     icon.classList.remove('heart-bounce');
                 }, 400);
-                // --- FIN DE L'ANIMATION ---
 
             } else {
-                // DEVIENT UNLIKÉ (Vide)
+                // UNLIKE
                 icon.classList.remove('fas');
                 icon.classList.add('far');
-                // Pas d'animation spéciale au "Dislike", c'est plus propre
             }
 
-            // Appel AJAX (Reste identique)
+            // Appel au serveur (AJAX)
             fetch(`index.php?page=like&id=${postId}`)
                 .then(response => response.json())
-                .then(data => {
-                    if (data.error) alert(data.error);
-                })
                 .catch(error => console.error('Erreur:', error));
         });
     });
 
-// --- DISLIKES (Masquer + Enlever Like) ---
+    // ============================================================
+    // 2. GESTION DES DISLIKES (Masquer le post)
+    // ============================================================
     const dislikeButtons = document.querySelectorAll('.dislike-btn');
 
     dislikeButtons.forEach(button => {
-        button.addEventListener('click', function() {
+        button.addEventListener('click', function () {
             const postId = this.dataset.id;
             const card = this.closest('.card');
-            
-            // Éléments visuels
+
             const content = card.querySelector('.post-content');
             const overlay = card.querySelector('.post-overlay');
-            const likeIcon = card.querySelector('.like-btn i'); // Le cœur
+            const likeIcon = card.querySelector('.like-btn i');
 
-            // 1. Masquer le contenu (Visuel)
+            // Masquer le contenu
             content.classList.add('d-none');
             overlay.classList.remove('d-none');
 
-            // 2. Enlever le Like visuellement (si présent)
+            // Retirer le like visuellement si présent
             if (likeIcon.classList.contains('fas')) {
                 likeIcon.classList.remove('fas');
-                likeIcon.classList.add('far'); // Devient vide
-                // Pas d'animation, on l'éteint juste discrètement
+                likeIcon.classList.add('far');
             }
 
-            // 3. Appel Serveur (BDD)
+            // Appel au serveur
             fetch(`index.php?page=dislike&id=${postId}`);
         });
     });
 
-    // --- GESTION DU "RÉAFFICHER" ---
+    // Bouton "Réafficher"
     const undoButtons = document.querySelectorAll('.undo-btn');
-
     undoButtons.forEach(button => {
         button.addEventListener('click', function () {
             const card = this.closest('.card');
             const content = card.querySelector('.post-content');
             const overlay = card.querySelector('.post-overlay');
 
-            // Inverse : On cache le message et on remet le contenu
             overlay.classList.add('d-none');
             content.classList.remove('d-none');
+        });
+    });
+
+    // ============================================================
+    // 3. PRÉVISUALISATION IMAGE (Le petit bonus UX)
+    // ============================================================
+    const fileInput = document.querySelector('input[type="file"]');
+
+    // On crée la zone d'aperçu dynamiquement si elle n'existe pas
+    if (fileInput) {
+        const previewDiv = document.createElement('div');
+        previewDiv.id = 'preview-container';
+        previewDiv.className = 'mt-3 text-center';
+        fileInput.parentNode.appendChild(previewDiv);
+
+        fileInput.addEventListener('change', function (event) {
+            const file = event.target.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    previewDiv.innerHTML = `
+                        <p class="text-muted small mb-1">Aperçu :</p>
+                        <img src="${e.target.result}" class="img-fluid rounded shadow-sm" style="max-height: 200px;">
+                    `;
+                }
+                reader.readAsDataURL(file);
+            }
+        });
+    }
+
+    // ============================================================
+    // 4. CONFIRMATION SUPPRESSION (Plus propre que le HTML)
+    // ============================================================
+    // Cible tous les liens qui contiennent "delete" dans l'URL
+    const deleteLinks = document.querySelectorAll('a[href*="delete"]');
+
+    deleteLinks.forEach(link => {
+        link.addEventListener('click', function (e) {
+            if (!confirm("⚠️ Êtes-vous sûr de vouloir supprimer ceci ?\nCette action est irréversible.")) {
+                e.preventDefault(); // Annule le clic si l'utilisateur dit Non
+            }
         });
     });
 

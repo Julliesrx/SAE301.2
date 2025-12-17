@@ -165,3 +165,26 @@ function delete() {
     header('Location: ' . $_SERVER['HTTP_REFERER']);
     exit;
 }
+
+// --- AJOUTER UN COMMENTAIRE ---
+function comment() {
+    // Vérifier si connecté
+    if (!isset($_SESSION['user_id'])) {
+        header('Location: index.php?page=login');
+        exit;
+    }
+
+    if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['content']) && isset($_POST['post_id'])) {
+        $content = htmlspecialchars($_POST['content']);
+        $postId = $_POST['post_id'];
+        $userId = $_SESSION['user_id'];
+
+        if (!empty($content)) {
+            addComment($userId, $postId, $content);
+        }
+    }
+
+    // On revient sur la page précédente (très fluide)
+    header('Location: index.php?page=home');
+    exit;
+}

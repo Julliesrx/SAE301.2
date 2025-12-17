@@ -70,4 +70,9 @@ switch ($page) {
         require_once 'controllers/PostController.php';
         delete();
         break;
+
+    case 'comment':
+        require_once 'controllers/PostController.php';
+        comment();
+        break;
 }

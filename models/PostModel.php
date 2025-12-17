@@ -164,3 +164,26 @@ function getPostAuthorId($postId) {
     $stmt->execute([$postId]);
     return $stmt->fetchColumn();
 }
+
+// --- GESTION DES COMMENTAIRES ---
+
+// Ajouter un commentaire
+function addComment($userId, $postId, $content) {
+    global $pdo;
+    $sql = "INSERT INTO comments (id_user, id_post, content, created_at) VALUES (?, ?, ?, NOW())";
+    $stmt = $pdo->prepare($sql);
+    return $stmt->execute([$userId, $postId, $content]);
+}
+
+// Récupérer les commentaires d'un post
+function getCommentsByPost($postId) {
+    global $pdo;
+    $sql = "SELECT c.*, u.username, u.pp 
+            FROM comments c 
+            JOIN users u ON c.id_user = u.id_user 
+            WHERE c.id_post = ? 
+            ORDER BY c.created_at ASC";
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute([$postId]);
+    return $stmt->fetchAll();
+}
