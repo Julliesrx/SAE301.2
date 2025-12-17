@@ -143,3 +143,25 @@ function handleDislike() {
     }
     exit;
 }
+
+function delete() {
+    // 1. Sécurité : Connecté ?
+    if (!isset($_SESSION['user_id']) || !isset($_GET['id'])) {
+        header('Location: index.php?page=home');
+        exit;
+    }
+
+    $postId = $_GET['id'];
+    $currentUserId = $_SESSION['user_id'];
+    $authorId = getPostAuthorId($postId);
+
+    // 2. Vérification : Est-ce MON post ou suis-je ADMIN ?
+    // (On autorise l'admin à supprimer n'importe quoi aussi, c'est pratique)
+    if ($currentUserId == $authorId || (isset($_SESSION['role']) && $_SESSION['role'] === 'admin')) {
+        deletePost($postId);
+    }
+
+    // 3. Retour à la page précédente (Referer) ou Home
+    header('Location: ' . $_SERVER['HTTP_REFERER']);
+    exit;
+}

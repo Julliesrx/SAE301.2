@@ -57,7 +57,17 @@
                 <?php else: ?>
                     <?php foreach($myPosts as $p): ?>
                         <div class="col-6 col-md-4 mb-4">
-                            <div class="card shadow-sm h-100">
+                            <div class="card shadow-sm h-100 position-relative">
+                                
+                                <?php if(isset($_SESSION['user_id']) && $_SESSION['user_id'] == $p['id_user']): ?>
+                                    <a href="index.php?page=post_delete&id=<?= $p['id_post'] ?>" 
+                                       class="btn btn-danger btn-sm position-absolute top-0 end-0 m-2"
+                                       onclick="return confirm('Vraiment supprimer cette photo ? 🗑️');"
+                                       style="z-index: 10;">
+                                        <i class="fas fa-trash-alt"></i>
+                                    </a>
+                                <?php endif; ?>
+
                                 <img src="assets/uploads/<?= htmlspecialchars($p['image_url']) ?>" class="card-img-top" style="height: 200px; object-fit: cover;">
                                 <div class="card-body p-2 text-center">
                                     <a href="index.php?page=home&cat=<?= $p['id_category'] ?>" class="text-decoration-none text-muted">

@@ -65,4 +65,9 @@ switch ($page) {
         require_once 'controllers/UserController.php';
         editProfile();
         break;
+
+    case 'post_delete':
+        require_once 'controllers/PostController.php';
+        delete();
+        break;
 }

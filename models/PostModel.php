@@ -138,3 +138,27 @@ function getLikedPostsByUser($userId) {
     $stmt->execute([$userId]);
     return $stmt->fetchAll();
 }
+
+// Supprimer un post (Pour l'auteur ou l'admin)
+function deletePost($postId) {
+    global $pdo;
+    // On récupère d'abord l'image pour la supprimer du dossier (optionnel mais propre)
+    $stmt = $pdo->prepare("SELECT image_url FROM posts WHERE id_post = ?");
+    $stmt->execute([$postId]);
+    $img = $stmt->fetchColumn();
+
+    if ($img && file_exists("assets/uploads/$img")) {
+        unlink("assets/uploads/$img"); // Supprime le fichier
+    }
+
+    $stmt = $pdo->prepare("DELETE FROM posts WHERE id_post = ?");
+    return $stmt->execute([$postId]);
+}
+
+// Vérifier qui est l'auteur (Sécurité)
+function getPostAuthorId($postId) {
+    global $pdo;
+    $stmt = $pdo->prepare("SELECT id_user FROM posts WHERE id_post = ?");
+    $stmt->execute([$postId]);
+    return $stmt->fetchColumn();
+}
