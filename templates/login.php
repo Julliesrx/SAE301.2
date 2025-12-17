@@ -1,4 +1,4 @@
-<?php require 'templates/partials/header.php'; ?>
+<?php require 'templates/header.php'; ?>
 
 <div class="row justify-content-center mt-5">
     <div class="col-md-6 col-lg-4">
@@ -30,4 +30,4 @@
     </div>
 </div>
 
-<?php require 'templates/partials/footer.php'; ?>
+<?php require 'templates/footer.php'; ?>

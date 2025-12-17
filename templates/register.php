@@ -1,4 +1,4 @@
-<?php require 'templates/partials/header.php'; ?>
+<?php require 'templates/header.php'; ?>
 
 <div class="row justify-content-center mt-5">
     <div class="col-md-6 col-lg-4">
@@ -16,12 +16,12 @@
                         <input type="text" name="username" class="form-control" required>
                     </div>
                     <div class="mb-3">
-                        <label>Email</label>
+                        <label>Mail</label>
                         <input type="email" name="email" class="form-control" required>
                     </div>
 
                     <div class="mb-3">
-                        <label>Votre passion principale ?</label>
+                        <label>Centre d'intérêt majeur ?</label>
                         <select name="category" class="form-select" required>
                             <option value="" disabled selected>Choisir...</option>
                             <?php foreach ($categories as $cat): ?>
@@ -41,4 +41,4 @@
     </div>
 </div>
 
-<?php require 'templates/partials/footer.php'; ?>
+<?php require 'templates/footer.php'; ?>

@@ -1,4 +1,4 @@
-<?php require 'templates/partials/header.php'; ?>
+<?php require 'templates/header.php'; ?>
 
 <div class="container mt-4">
     <div class="row justify-content-center">
@@ -41,7 +41,7 @@
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Description (Optionnel)</label>
+                            <label class="form-label">Description (Optionnelle)</label>
                             <textarea name="description" class="form-control" rows="3" placeholder="Où as-tu pris cette photo ?"></textarea>
                         </div>
 
@@ -54,4 +54,4 @@
     </div>
 </div>
 
-<?php require 'templates/partials/footer.php'; ?>
+<?php require 'templates/footer.php'; ?>

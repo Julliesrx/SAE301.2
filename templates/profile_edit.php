@@ -1,4 +1,4 @@
-<?php require 'templates/partials/header.php'; ?>
+<?php require 'templates/header.php'; ?>
 
 <div class="container mt-4">
     <div class="row justify-content-center">
@@ -33,12 +33,12 @@
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Bio / Description</label>
+                            <label class="form-label">Bio</label>
                             <textarea name="bio" class="form-control" rows="3"><?= htmlspecialchars($user['bio'] ?? '') ?></textarea>
                         </div>
 
                         <div class="mb-3">
-                            <label class="form-label">Catégorie Principale</label>
+                            <label class="form-label">Catégorie préférée</label>
                             <select name="category" class="form-select">
                                 <?php foreach($categories as $cat): ?>
                                     <option value="<?= $cat['id_category'] ?>" 
@@ -58,4 +58,4 @@
     </div>
 </div>
 
-<?php require 'templates/partials/footer.php'; ?>
+<?php require 'templates/footer.php'; ?>

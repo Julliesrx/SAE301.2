@@ -1,15 +1,9 @@
-/* --- NOUVELLE PALETTE FREE MESSAGE --- */
 :root {
     --color-primary: #067bc2;
-    /* Bleu principal */
     --color-secondary: #74c5e9;
-    /* Bleu clair */
     --color-warning: #f9fabb;
-    /* Jaune pâle */
     --color-success: #62c370;
-    /* Vert (Connexion/Inscription) */
     --color-danger: #cc3363;
-    /* Rouge (Déconnexion/Supprimer) */
 }
 
 body {
@@ -17,7 +11,6 @@ body {
     background-color: #f8f9fa;
 }
 
-/* NAVBAR */
 .navbar,
 .custom-navbar {
     background-color: var(--color-primary) !important;
@@ -26,14 +19,11 @@ body {
 
 .navbar-brand {
     color: var(--color-warning) !important;
-    /* Le logo ressort en jaune pâle ou blanc ? */
     font-weight: 900;
     text-transform: uppercase;
 }
 
-/* --- BOUTONS --- */
 
-/* Boutons de VALIDATION (Connexion / Inscription / Publier) -> VERT */
 .btn-success,
 .btn-primary {
     background-color: var(--color-success) !important;
@@ -45,10 +35,8 @@ body {
 .btn-success:hover,
 .btn-primary:hover {
     background-color: #4da659 !important;
-    /* Vert un peu plus foncé */
 }
 
-/* Boutons DANGER (Supprimer / Déconnexion) -> ROUGE */
 .btn-danger,
 .text-danger {
     background-color: transparent;
@@ -61,15 +49,10 @@ body {
     color: white !important;
 }
 
-/* Icône de déconnexion dans le header */
 .nav-link.text-danger {
     color: var(--color-warning) !important;
-    /* On le met en jaune ou rouge ? Rouge sur bleu c'est dur à lire. */
-    /* Correction : Rouge sur fond blanc (menu mobile) ou jaune sur fond bleu ? */
 }
 
-/* Exception pour la navbar : le rouge (#cc3363) sur du bleu (#067bc2) vibre trop. 
-   Je mets l'icône de sortie en Rouge Rosé clair ou Blanc cassé */
 .navbar .text-danger {
     color: var(--color-danger) !important;
     background: white;
@@ -81,22 +64,18 @@ body {
     justify-content: center;
 }
 
-/* MODIFICATION / MODÉRATION -> JAUNE */
 .text-warning,
 .btn-warning {
     color: var(--color-warning) !important;
 }
 
-/* Si c'est un bouton, il faut que le texte soit foncé car le jaune est très clair */
 .btn-warning {
     background-color: var(--color-warning) !important;
     color: #3D4B81 !important;
-    /* Texte foncé pour lisibilité */
     border: none;
     font-weight: bold;
 }
 
-/* --- DESIGN GÉNÉRAL --- */
 .card {
     border: none;
     border-radius: 10px;
@@ -105,10 +84,10 @@ body {
 
 .rounded-circle {
     border: 3px solid var(--color-secondary) !important;
-    /* Bordure bleu clair photo profil */
 }
 
-/* Animation Cœur */
+
+/* mouvement coeur  */
 .heart-bounce {
     animation: bounce 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }

@@ -1,10 +1,10 @@
-<?php require 'templates/partials/header.php'; ?>
+<?php require 'templates/header.php'; ?>
 
 <div class="container mt-4">
     <h2 class="mb-4 text-warning"><i class="fas fa-shield-alt"></i> Espace Modération</h2>
 
     <?php if (empty($posts)): ?>
-        <div class="alert alert-info">Aucun post en attente de validation. Bon travail !</div>
+        <div class="alert alert-info">Aucun post en attente de validation.</div>
     <?php else: ?>
 
         <div class="table-responsive">
@@ -55,4 +55,4 @@
     <?php endif; ?>
 </div>
 
-<?php require 'templates/partials/footer.php'; ?>
+<?php require 'templates/footer.php'; ?>

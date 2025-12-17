@@ -1,13 +1,4 @@
 <?php
-// ROUTEUR.PHP
-
-// AJOUTE ÇA TEMPORAIREMENT POUR VOIR L'ERREUR
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
-
-// session_start(); 
-
 
 session_start();
 require_once 'config/db.php';
@@ -15,7 +6,7 @@ require_once 'config/db.php';
 $page = $_GET['page'] ?? 'home';
 
 switch ($page) {
-    // --- GESTION UTILISATEURS ---
+    // --- users ---
     case 'register':
         require_once 'controllers/UserController.php';
         register();
@@ -29,23 +20,23 @@ switch ($page) {
         logout();
         break;
 
-    // --- GESTION POSTS ---
+    // --- posts ---
     case 'home':
         require_once 'controllers/PostController.php';
-        index(); // Affiche le feed
+        index();
         break;
     case 'post_create':
         require_once 'controllers/PostController.php';
-        create(); // Formulaire d'upload
+        create(); 
         break;
 
-    // --- ADMIN ---
+    // --- admin ---
     case 'admin':
         require_once 'controllers/PostController.php';
-        admin(); // Modération
+        admin(); 
         break;
 
-    // --- INTERACTIONS (AJAX) ---
+    // --- évenements ---
     case 'like':
         require_once 'controllers/PostController.php';
         handleLike();
@@ -53,7 +44,7 @@ switch ($page) {
 
     default:
         require_once 'controllers/PostController.php';
-        index(); // Par défaut, on va sur le feed
+        index(); 
         break;
 
     case 'profile':

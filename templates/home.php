@@ -1,4 +1,4 @@
-<?php require 'templates/partials/header.php'; ?> 
+<?php require 'templates/header.php'; ?> 
 
 <div class="container mb-4">
     <div class="d-flex gap-2 overflow-auto py-2">
@@ -17,7 +17,7 @@
     <div class="row">
         <?php if (empty($posts)): ?>
             <div class="col-12 text-center mt-5">
-                <h3>Oups, c'est vide ! 🌵</h3>
+                <h3>Posts en cours de validation !</h3>
                 <p>Aucune photo n'a été validée pour l'instant.</p>
             </div>
         <?php else: ?>
@@ -25,11 +25,9 @@
             <?php foreach($posts as $p): ?>
             
             <?php 
-                // Vérification Like/Dislike
                 $isLiked = isset($_SESSION['user_id']) ? hasLiked($_SESSION['user_id'], $p['id_post']) : false;
                 $isDisliked = isset($_SESSION['user_id']) ? hasDisliked($_SESSION['user_id'], $p['id_post']) : false;
                 
-                // Récupération des commentaires pour ce post
                 $comments = getCommentsByPost($p['id_post']);
             ?>
 
@@ -127,4 +125,4 @@
     </div>
 </div>
 
-<?php require 'templates/partials/footer.php'; ?>
+<?php require 'templates/footer.php'; ?>

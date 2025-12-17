@@ -1,22 +1,17 @@
 <?php
 require_once 'models/PostModel.php';
 
-// --- PAGE D'ACCUEIL (FEED) ---
 function index() {
-    // 1. Gestion du filtre (ex: index.php?page=home&cat=1)
     $catId = isset($_GET['cat']) ? $_GET['cat'] : null;
 
-    // 2. Récupération des données via le Model
     $posts = getPublishedPosts($catId);       
     $categories = getAllCategories();         
 
-    // 3. Affichage de la vue
     require 'templates/home.php';
 }
 
-// --- PAGE D'UPLOAD ---
+// créer post 
 function create() {
-    // 1. Vérifier si connecté
     if (!isset($_SESSION['user_id'])) {
         header('Location: index.php?page=login');
         exit;
@@ -25,7 +20,6 @@ function create() {
     $error = null;
     $success = null;
 
-    // 2. Traitement du formulaire
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['image'])) {
         $categoryId = $_POST['category'];
         $description = htmlspecialchars($_POST['description']);
@@ -64,15 +58,13 @@ function create() {
     require 'templates/post_create.php';
 }
 
-// --- PAGE ADMIN (MODÉRATION) ---
+// pour la modération admin TRIER ADMIN/USER
 function admin() {
-    // 1. SÉCURITÉ : Seul l'admin passe
     if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
         header('Location: index.php?page=home');
         exit;
     }
 
-    // 2. Gestion des actions (Valider / Refuser)
     if (isset($_GET['action']) && isset($_GET['id'])) {
         $id = $_GET['id'];
         $action = $_GET['action']; 
@@ -87,13 +79,11 @@ function admin() {
         exit;
     }
 
-    // 3. Récupérer les données via le Modèle (Maintenant ça va marcher !)
     $posts = getPendingPosts();
 
-    // 4. Afficher la vue
     require 'templates/admin.php';
 }
-// Like
+
 function handleLike() {
     header('Content-Type: application/json');
 
@@ -111,7 +101,7 @@ function handleLike() {
             echo json_encode(['status' => 'unliked']);
         } else {
             addLike($userId, $postId);
-            removeDislike($userId, $postId); // <--- AJOUT : On est sûr qu'il n'est plus masqué
+            removeDislike($userId, $postId); 
             echo json_encode(['status' => 'liked']);
         }
     }
@@ -131,13 +121,11 @@ function handleDislike() {
         $userId = $_SESSION['user_id'];
 
         if (hasDisliked($userId, $postId)) {
-            // Si on clique sur "Réafficher"
             removeDislike($userId, $postId);
             echo json_encode(['status' => 'revealed']);
         } else {
-            // Si on masque le post
             addDislike($userId, $postId);
-            removeLike($userId, $postId); // <--- AJOUT : On enlève le like automatiquement !
+            removeLike($userId, $postId); 
             echo json_encode(['status' => 'hidden']);
         }
     }
@@ -145,7 +133,6 @@ function handleDislike() {
 }
 
 function delete() {
-    // 1. Sécurité : Connecté ?
     if (!isset($_SESSION['user_id']) || !isset($_GET['id'])) {
         header('Location: index.php?page=home');
         exit;
@@ -155,20 +142,15 @@ function delete() {
     $currentUserId = $_SESSION['user_id'];
     $authorId = getPostAuthorId($postId);
 
-    // 2. Vérification : Est-ce MON post ou suis-je ADMIN ?
-    // (On autorise l'admin à supprimer n'importe quoi aussi, c'est pratique)
     if ($currentUserId == $authorId || (isset($_SESSION['role']) && $_SESSION['role'] === 'admin')) {
         deletePost($postId);
     }
 
-    // 3. Retour à la page précédente (Referer) ou Home
     header('Location: ' . $_SERVER['HTTP_REFERER']);
     exit;
 }
 
-// --- AJOUTER UN COMMENTAIRE ---
 function comment() {
-    // Vérifier si connecté
     if (!isset($_SESSION['user_id'])) {
         header('Location: index.php?page=login');
         exit;
@@ -184,7 +166,6 @@ function comment() {
         }
     }
 
-    // On revient sur la page précédente (très fluide)
     header('Location: index.php?page=home');
     exit;
 }
