@@ -1,20 +1,132 @@
-/* Animation Élastique du Cœur */
+/* --- NOUVELLE PALETTE FREE MESSAGE --- */
+:root {
+    --color-primary: #067bc2;
+    /* Bleu principal */
+    --color-secondary: #74c5e9;
+    /* Bleu clair */
+    --color-warning: #f9fabb;
+    /* Jaune pâle */
+    --color-success: #62c370;
+    /* Vert (Connexion/Inscription) */
+    --color-danger: #cc3363;
+    /* Rouge (Déconnexion/Supprimer) */
+}
+
+body {
+    font-family: 'Lato', sans-serif;
+    background-color: #f8f9fa;
+}
+
+/* NAVBAR */
+.navbar,
+.custom-navbar {
+    background-color: var(--color-primary) !important;
+    box-shadow: 0 4px 10px rgba(6, 123, 194, 0.3);
+}
+
+.navbar-brand {
+    color: var(--color-warning) !important;
+    /* Le logo ressort en jaune pâle ou blanc ? */
+    font-weight: 900;
+    text-transform: uppercase;
+}
+
+/* --- BOUTONS --- */
+
+/* Boutons de VALIDATION (Connexion / Inscription / Publier) -> VERT */
+.btn-success,
+.btn-primary {
+    background-color: var(--color-success) !important;
+    border-color: var(--color-success) !important;
+    color: white !important;
+    font-weight: 700;
+}
+
+.btn-success:hover,
+.btn-primary:hover {
+    background-color: #4da659 !important;
+    /* Vert un peu plus foncé */
+}
+
+/* Boutons DANGER (Supprimer / Déconnexion) -> ROUGE */
+.btn-danger,
+.text-danger {
+    background-color: transparent;
+    color: var(--color-danger) !important;
+    border-color: var(--color-danger);
+}
+
+.btn-danger:hover {
+    background-color: var(--color-danger) !important;
+    color: white !important;
+}
+
+/* Icône de déconnexion dans le header */
+.nav-link.text-danger {
+    color: var(--color-warning) !important;
+    /* On le met en jaune ou rouge ? Rouge sur bleu c'est dur à lire. */
+    /* Correction : Rouge sur fond blanc (menu mobile) ou jaune sur fond bleu ? */
+}
+
+/* Exception pour la navbar : le rouge (#cc3363) sur du bleu (#067bc2) vibre trop. 
+   Je mets l'icône de sortie en Rouge Rosé clair ou Blanc cassé */
+.navbar .text-danger {
+    color: var(--color-danger) !important;
+    background: white;
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* MODIFICATION / MODÉRATION -> JAUNE */
+.text-warning,
+.btn-warning {
+    color: var(--color-warning) !important;
+}
+
+/* Si c'est un bouton, il faut que le texte soit foncé car le jaune est très clair */
+.btn-warning {
+    background-color: var(--color-warning) !important;
+    color: #3D4B81 !important;
+    /* Texte foncé pour lisibilité */
+    border: none;
+    font-weight: bold;
+}
+
+/* --- DESIGN GÉNÉRAL --- */
+.card {
+    border: none;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+}
+
+.rounded-circle {
+    border: 3px solid var(--color-secondary) !important;
+    /* Bordure bleu clair photo profil */
+}
+
+/* Animation Cœur */
 .heart-bounce {
-    /* Durée 0.4s avec une courbe élastique "cubic-bezier" */
     animation: bounce 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
 }
 
 @keyframes bounce {
     0% {
-        transform: scale(1); /* Taille normale */
+        transform: scale(1);
     }
+
     30% {
-        transform: scale(0.6); /* Il rétrécit fort (pression) */
+        transform: scale(0.6);
     }
+
     60% {
-        transform: scale(1.3); /* Il explose un peu trop gros (rebond) */
+        transform: scale(1.3);
     }
+
     100% {
-        transform: scale(1); /* Il revient à la normale */
+        transform: scale(1);
     }
 }
