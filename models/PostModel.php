@@ -22,7 +22,8 @@ function createPost($userId, $categoryId, $filename, $description) {
 function getPublishedPosts($categoryId = null) {
     global $pdo;
     
-    $sql = "SELECT p.*, u.username, c.name as cat_name 
+    // --- MODIFICATION ICI : On ajoute u.pp ---
+    $sql = "SELECT p.*, u.username, u.pp, c.name as cat_name 
             FROM posts p
             JOIN users u ON p.id_user = u.id_user
             JOIN categories c ON p.id_category = c.id_category
@@ -48,7 +49,8 @@ function getPublishedPosts($categoryId = null) {
 function getPendingPosts() {
     global $pdo;
     // On veut voir qui a posté (users) et quelle catégorie (categories)
-    $sql = "SELECT p.*, u.username, c.name as cat_name 
+    // --- MODIFICATION ICI : On ajoute u.pp ---
+    $sql = "SELECT p.*, u.username, u.pp, c.name as cat_name 
             FROM posts p
             JOIN users u ON p.id_user = u.id_user
             JOIN categories c ON p.id_category = c.id_category
@@ -125,8 +127,8 @@ function getPostsByUser($userId) {
 // Récupérer les posts LIKÉS par un utilisateur (Pour l'onglet "J'aime")
 function getLikedPostsByUser($userId) {
     global $pdo;
-    // Double jointure : on part des likes -> on va chercher les posts -> on va chercher les auteurs et catégories
-    $sql = "SELECT p.*, u.username, c.name as cat_name 
+    // --- MODIFICATION ICI : On ajoute u.pp ---
+    $sql = "SELECT p.*, u.username, u.pp, c.name as cat_name 
             FROM likes l
             JOIN posts p ON l.id_post = p.id_post
             JOIN users u ON p.id_user = u.id_user
