@@ -1,17 +1,19 @@
 <?php
 require_once 'models/PostModel.php';
 
-function index() {
+function index()
+{
     $catId = isset($_GET['cat']) ? $_GET['cat'] : null;
 
-    $posts = getPublishedPosts($catId);       
-    $categories = getAllCategories();         
+    $posts = getPublishedPosts($catId);
+    $categories = getAllCategories();
 
     require 'templates/home.php';
 }
 
 // créer post 
-function create() {
+function create()
+{
     if (!isset($_SESSION['user_id'])) {
         header('Location: index.php?page=login');
         exit;
@@ -23,12 +25,12 @@ function create() {
     if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_FILES['image'])) {
         $categoryId = $_POST['category'];
         $description = htmlspecialchars($_POST['description']);
-        
+
         $file = $_FILES['image'];
         $fileName = $file['name'];
         $fileTmp = $file['tmp_name'];
         $fileError = $file['error'];
-        
+
         $ext = strtolower(pathinfo($fileName, PATHINFO_EXTENSION));
         $allowed = ['jpg', 'jpeg', 'png', 'gif', 'webp'];
 
@@ -59,7 +61,8 @@ function create() {
 }
 
 // pour la modération admin TRIER ADMIN/USER
-function admin() {
+function admin()
+{
     if (!isset($_SESSION['role']) || $_SESSION['role'] !== 'admin') {
         header('Location: index.php?page=home');
         exit;
@@ -67,14 +70,14 @@ function admin() {
 
     if (isset($_GET['action']) && isset($_GET['id'])) {
         $id = $_GET['id'];
-        $action = $_GET['action']; 
-        
+        $action = $_GET['action'];
+
         if ($action === 'publish') {
             updatePostStatus($id, 'PUBLISHED');
         } elseif ($action === 'reject') {
             updatePostStatus($id, 'REJECTED');
         }
-        
+
         header('Location: index.php?page=admin');
         exit;
     }
@@ -84,7 +87,8 @@ function admin() {
     require 'templates/admin.php';
 }
 
-function handleLike() {
+function handleLike()
+{
     header('Content-Type: application/json');
 
     if (!isset($_SESSION['user_id'])) {
@@ -101,14 +105,15 @@ function handleLike() {
             echo json_encode(['status' => 'unliked']);
         } else {
             addLike($userId, $postId);
-            removeDislike($userId, $postId); 
+            removeDislike($userId, $postId);
             echo json_encode(['status' => 'liked']);
         }
     }
     exit;
 }
 
-function handleDislike() {
+function handleDislike()
+{
     header('Content-Type: application/json');
 
     if (!isset($_SESSION['user_id'])) {
@@ -125,14 +130,15 @@ function handleDislike() {
             echo json_encode(['status' => 'revealed']);
         } else {
             addDislike($userId, $postId);
-            removeLike($userId, $postId); 
+            removeLike($userId, $postId);
             echo json_encode(['status' => 'hidden']);
         }
     }
     exit;
 }
 
-function delete() {
+function delete()
+{
     if (!isset($_SESSION['user_id']) || !isset($_GET['id'])) {
         header('Location: index.php?page=home');
         exit;
@@ -150,7 +156,8 @@ function delete() {
     exit;
 }
 
-function comment() {
+function comment()
+{
     if (!isset($_SESSION['user_id'])) {
         header('Location: index.php?page=login');
         exit;
@@ -166,6 +173,15 @@ function comment() {
         }
     }
 
+    header('Location: index.php?page=home');
+    exit;
+}
+
+function deleteCommentAction()
+{
+    if (isset($_GET['id']) && isset($_SESSION['role']) && $_SESSION['role'] === 'admin') {
+        deleteComment($_GET['id']);
+    }
     header('Location: index.php?page=home');
     exit;
 }

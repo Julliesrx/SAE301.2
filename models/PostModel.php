@@ -147,7 +147,7 @@ function deletePost($postId)
     $img = $stmt->fetchColumn();
 
     if ($img && file_exists("assets/uploads/$img")) {
-        unlink("assets/uploads/$img"); 
+        unlink("assets/uploads/$img");
     }
 
     $stmt = $pdo->prepare("DELETE FROM posts WHERE id_post = ?");
@@ -169,6 +169,13 @@ function addComment($userId, $postId, $content)
     $sql = "INSERT INTO comments (id_user, id_post, content, created_at) VALUES (?, ?, ?, NOW())";
     $stmt = $pdo->prepare($sql);
     return $stmt->execute([$userId, $postId, $content]);
+}
+
+function deleteComment($id)
+{
+    global $pdo;
+    $stmt = $pdo->prepare("DELETE FROM comments WHERE id_commentaire = ?");
+    return $stmt->execute([$id]);
 }
 
 function getCommentsByPost($postId)

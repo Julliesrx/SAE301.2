@@ -27,13 +27,13 @@ switch ($page) {
         break;
     case 'post_create':
         require_once 'controllers/PostController.php';
-        create(); 
+        create();
         break;
 
     // --- admin ---
     case 'admin':
         require_once 'controllers/PostController.php';
-        admin(); 
+        admin();
         break;
 
     // --- évenements ---
@@ -44,7 +44,7 @@ switch ($page) {
 
     default:
         require_once 'controllers/PostController.php';
-        index(); 
+        index();
         break;
 
     case 'profile':
@@ -65,5 +65,9 @@ switch ($page) {
     case 'comment':
         require_once 'controllers/PostController.php';
         comment();
+        break;
+    case 'comment_delete':
+        require_once 'controllers/PostController.php';
+        deleteCommentAction();
         break;
 }
